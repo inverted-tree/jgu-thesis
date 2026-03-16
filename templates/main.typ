@@ -23,6 +23,7 @@
   list-of-figures: false,
   list-of-tables: false,
   abbreviations: none,
+  statutory-declaration: none,
 )
 
 = The MESA Accelerator
