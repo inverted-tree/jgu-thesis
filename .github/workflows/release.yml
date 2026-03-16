@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: [Check]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  release:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Check version change
+        id: version
+        run: |
+          OLD=$(git show HEAD~1:typst.toml | grep '^version' | cut -d'"' -f2)
+          NEW=$(grep '^version' typst.toml | cut -d'"' -f2)
+          if [ "$OLD" != "$NEW" ]; then
+            echo "tag=$NEW" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: typst-community/setup-typst@v4
+        if: steps.version.outputs.tag
+
+      - name: Generate thumbnail
+        if: steps.version.outputs.tag
+        run: typst compile templates/main.typ img/thumbnail.png --pages 1
+
+      - name: Commit thumbnail
+        if: steps.version.outputs.tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add img/thumbnail.png
+          git diff --staged --quiet || git commit -m "Update thumbnail for ${{ steps.version.outputs.tag }}"
+          git push origin main
+
+      - name: Tag release
+        if: steps.version.outputs.tag
+        run: |
+          git tag ${{ steps.version.outputs.tag }}
+          git push origin ${{ steps.version.outputs.tag }}
