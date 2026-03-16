@@ -15,6 +15,9 @@
   location: "Mainz, Germany",
   completion-date: datetime.today().display("[month repr:long] [year]"),
   creative-commons: true,
+  list-of-figures: false,
+  list-of-tables: false,
+  abbreviations: none,
   doc,
 ) = {
   let first-chapter-seen = state("first-chapter-seen", false)
@@ -195,6 +198,49 @@
       ],
     ),
   )
+
+  if list-of-figures {
+    pagebreak()
+    outline(
+      title: grid(
+        [
+          #set text(23pt)
+          #h(1fr)
+          List of Figures
+          #v(2em)
+        ],
+      ),
+      target: figure.where(kind: image),
+    )
+  }
+
+  if list-of-tables {
+    pagebreak()
+    outline(
+      title: grid(
+        [
+          #set text(23pt)
+          #h(1fr)
+          List of Tables
+          #v(2em)
+        ],
+      ),
+      target: figure.where(kind: table),
+    )
+  }
+
+  if abbreviations != none {
+    pagebreak()
+    align(right, text(23pt)[Abbreviations])
+    v(2em)
+    let sorted = abbreviations.pairs().sorted(key: pair => pair.first())
+    grid(
+      columns: (auto, 1fr),
+      column-gutter: 2em,
+      row-gutter: 0.6em,
+      ..sorted.map(pair => (strong(pair.first()), pair.last())).flatten()
+    )
+  }
 
   set page(numbering: "1")
   doc

@@ -17,6 +17,10 @@
   thesis-type: "dissertation",
   doctor-of: "Natural Sciences",
   major: "Physics",
+  creative-commons: true,
+  list-of-figures: false,
+  list-of-tables: false,
+  abbreviations: none,
 )
 
 = The MESA Accelerator
