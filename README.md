@@ -19,13 +19,56 @@ Download the [latest release](https://github.com/inverted-tree/jgu-thesis/releas
 just install
 ```
 
-This copies the package into the Typst local packages directory for your OS. You can then import it in any Typst project using the `@local` namespace:
+This copies the package into the Typst local packages directory for your OS. You can then import it in any Typst project using the @local namespace:
 
 ```typst
-#import "@local/jgu-mint-thesis:0.1.6": *
+#import "@local/jgu-mint-thesis:0.1.7": *
+```
+
+# Usage
+
+Apply `frontmatter` as a show rule at the top of your document. This allows you to set the following options:
+
+```typst
+#show: frontmatter.with(
+  title: "...",
+  author: "...",
+  advisor: "...",
+  abstract: [...],
+  thesis-type: "dissertation",    // "dissertation", "master", or "bachelor"
+  doctor-of: "Natural Sciences",
+  major: "Physics",
+  department: "Department of Physics",
+  completion-date: "May 2026",    // defaults to today
+  creative-commons: true,         // CC BY 4.0 on copyright page
+  list-of-figures: false,
+  list-of-tables: false,
+  abbreviations: (
+    "ERL": "Energy Recovery Linac",
+    "MESA": "Mainz Energy-recovering Superconducting Accelerator",
+  ),
+)
+```
+
+The list of figures and tables are optional. If set to true, typst will automatically populate them. A list of abbreviations can be created by populating the abbreviations list. Entries will be sorted alphabetically and rendered as a two-column list.
+
+The package also exports `accent-color` (JGU red), which can be used in custom figures or highlighted content, or overwritten with a different color.
+
+Place `#bibliography(...)` right before the appendix. Below that, switch heading and figure numbering to `A.1` format like so:
+
+```typst
+#bibliography("refs.yml")
+
+#show: appendix.with()
+
+= Appendix Title
 ```
 
 # Changelog
+
+## 0.1.7
+- Added optional list of figures, list of tables, and abbreviations sections
+- Switched paper size to A4
 
 ## 0.1.6
 - Adapted template to JGU Mainz with minor stylistic changes

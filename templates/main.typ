@@ -1,4 +1,4 @@
-#import "@local/jgu-mint-thesis:0.1.6": *
+#import "@local/jgu-mint-thesis:0.1.7": *
 
 #show: frontmatter.with(
   title: "Precision Measurements at MESA",
