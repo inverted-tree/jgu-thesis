@@ -10,4 +10,12 @@ jobs:
 
       - uses: typst-community/setup-typst@v4
 
+      - name: Install package locally
+        run: |
+          VERSION=$(grep '^version' typst.toml | sed 's/.*= "\(.*\)"/\1/')
+          NAME=$(grep '^name' typst.toml | sed 's/.*= "\(.*\)"/\1/')
+          DEST="$HOME/.local/share/typst/packages/local/$NAME/$VERSION"
+          mkdir -p "$DEST"
+          cp -r . "$DEST"
+
       - run: typst compile templates/main.typ

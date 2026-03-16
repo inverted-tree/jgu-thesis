@@ -1,4 +1,6 @@
-#let accent-color = rgb(165, 28, 48)
+#let accent-color = cmyk(0%, 100%, 80%, 20%)
+#let logo = none
+#let _in-appendix = state("in-appendix", false)
 
 #let frontmatter(
   title: none,
@@ -6,6 +8,7 @@
   author: "Jane Doe",
   advisor: "Dear Advisor",
   department: "Department of Physics",
+  thesis-type: "dissertation", // "dissertation", "master", or "bachelor"
   doctor-of: "Philosophy",
   major: "Physics",
   institution: "Johannes Gutenberg University Mainz",
@@ -14,6 +17,8 @@
   creative-commons: true,
   doc,
 ) = {
+  let first-chapter-seen = state("first-chapter-seen", false)
+
   set page(
     paper: "us-letter",
     margin: (x: 1.375in, y: 1.375in),
@@ -25,10 +30,14 @@
   show heading.where(
     level: 1,
     outlined: true,
-  ): it => [
+  ): it => context [
     #set align(right)
     #set text(20pt, weight: "regular")
     #pagebreak()
+    #if not first-chapter-seen.get() [
+      #first-chapter-seen.update(true)
+      #counter(page).update(1)
+    ]
     #v(25%)
     #text(100pt, accent-color, counter(heading).display())\
     #text(24.88pt, it.body)
@@ -42,13 +51,11 @@
     counter(figure.where(kind: raw)).update(0)
     it
   }
-  set heading(supplement: it => {
-    if it.depth == 1 {
-      "Chapter"
-    } else {
-      "Section"
-    }
-  })
+  show heading.where(level: 2): set block(above: 2.1em)
+  show heading.where(level: 3): set block(above: 2.1em)
+
+  show heading: set heading(supplement: "Section")
+  show heading.where(level: 1): set heading(supplement: "Chapter")
 
   set math.equation(numbering: (..num) => numbering(
     "(1.1.1)",
@@ -70,15 +77,21 @@
       #v(100pt)
       #show: smallcaps
 
-      A dissertation presented\
-      by\
+      #if thesis-type == "dissertation" [A dissertation] else [A thesis]\
+      presented by\
       #author\
       to\
       The #department\
       #v(12pt)
       in partial fulfillment of the requirements\
       for the degree of\
-      Doctor of #doctor-of\
+      #if thesis-type == "dissertation" [
+        Doctor of #doctor-of
+      ] else if thesis-type == "master" [
+        Master of Science
+      ] else [
+        Bachelor of Science
+      ]\
       in the subject of\
       #major
       #v(12pt)
@@ -102,11 +115,15 @@
     ]
 
     Copyright #sym.copyright #datetime.today().display("[year]") #author
+
+    #v(15%)
+    #if logo != none { logo } else { image("img/logo.svg", width: 6cm) }
   ]
   pagebreak()
 
   // "Preliminary pages (abstract, table of contents, list of tables, graphs, illustrations, and
   // preface) should use small Roman numerals"
+  counter(page).update(1)
   set page(numbering: "I")
   set align(top)
   grid(
@@ -130,7 +147,15 @@
   pagebreak()
 
   show outline.entry.where(level: 1): set outline.entry(fill: none)
-  show outline.entry.where(level: 1): it => { smallcaps(it) }
+  show outline.entry.where(level: 1): it => context {
+    if _in-appendix.at(it.element.location()) and it.element.numbering != none {
+      // Appendix chapter — indented sub-entry
+      pad(left: 1.5em, it)
+    } else {
+      // Regular chapter or Appendix section marker — smallcaps
+      smallcaps(it)
+    }
+  }
 
   show ref: it => {
     set text(fill: accent-color)
@@ -145,6 +170,21 @@
     ]) #it.body
   ]
 
+  show bibliography: it => {
+    show heading.where(level: 1, outlined: true): it => [
+      #set align(right)
+      #set text(20pt, weight: "regular")
+      #pagebreak()
+      #v(25%)
+      #text(100pt, accent-color, "B")\
+      #text(24.88pt, it.body)
+      #v(4em)
+    ]
+    set text(size: 10pt, top-edge: 0.7em, bottom-edge: -0.3em)
+    set par(leading: 0.5em, spacing: 1.2em)
+    it
+  }
+
   outline(
     title: grid(
       [
@@ -156,7 +196,6 @@
     ),
   )
 
-  counter(page).update(1)
   set page(numbering: "1")
   doc
 }
@@ -164,6 +203,8 @@
 #let appendix(
   doc,
 ) = {
+  _in-appendix.update(true)
+
   set heading(numbering: (..num) => {
     let nums = num.pos()
     if nums.len() == 1 {
@@ -175,15 +216,18 @@
   show heading.where(
     level: 1,
     outlined: true,
-  ): it => [
-    #set align(right)
-    #set text(20pt, weight: "regular")
-    #pagebreak()
-    #v(25%)
-    #text(100pt, accent-color, counter(heading).display())\
-    #text(24.88pt, it.body)
-    #v(4em)
-  ]
+  ): it => context {
+    if it.numbering == none [
+      // "Appendix" TOC marker — invisible in body
+    ] else [
+      #set align(left)
+      #set text(20pt, weight: "regular")
+      #pagebreak()
+      #v(25%)
+      #text(24.88pt)[#counter(heading).display(). #it.body]
+      #v(4em)
+    ]
+  }
   show heading.where(level: 1): smallcaps
   show heading.where(level: 1): it => {
     counter(math.equation).update(0)
@@ -202,6 +246,22 @@
     numbering("A", ch) + "." + numbering("1.1", ..num)
   })
 
+  // Section divider — mirrors bibliography heading style
+  {
+    set align(right)
+    pagebreak()
+    v(25%)
+    text(100pt, accent-color, "A")
+    linebreak()
+    text(24.88pt)[Appendix]
+    v(4em)
+  }
+
+  // Invisible heading — creates the "Appendix" TOC entry pointing to this page
+  heading(level: 1, numbering: none, outlined: true)[Appendix]
+
+  // Reset counter so appendix chapters start at A
   counter(heading).update(0)
+
   doc
 }

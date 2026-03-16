@@ -3,7 +3,11 @@ This is an **unofficial** MINT-focused thesis template for the Johannes Gutenber
 
 <div align="center" style="display:flex; gap:1rem; justify-content:center;">
   <img src="img/thumbnail.png" style="width:48%; max-width:400px;">
+  <img src="img/abst.png" style="width:48%; max-width:400px;">
+</div>
+<div align="center" style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
   <img src="img/ch1.png" style="width:48%; max-width:400px;">
+  <img src="img/bib.png" style="width:48%; max-width:400px;">
 </div>
 
 
@@ -22,6 +26,9 @@ This copies the package into the Typst local packages directory for your OS. You
 ```
 
 # Changelog
+
+## 0.1.6
+- Adapted template to JGU Mainz with minor stylistic changes
 
 ## 0.1.5
 - `Chapter` and `Section` are used for supplement correctly
