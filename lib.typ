@@ -20,7 +20,7 @@
   let first-chapter-seen = state("first-chapter-seen", false)
 
   set page(
-    paper: "us-letter",
+    paper: "a4",
     margin: (x: 1.375in, y: 1.375in),
     numbering: "I",
   )
