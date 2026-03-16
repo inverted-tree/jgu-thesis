@@ -6,7 +6,7 @@
   title: none,
   abstract: [],
   author: "Jane Doe",
-  advisor: "Dear Advisor",
+  examiners: ("Dear Advisor",),
   department: "Department of Physics",
   thesis-type: "dissertation", // "dissertation", "master", or "bachelor"
   doctor-of: "Philosophy",
@@ -140,14 +140,15 @@
   // preface) should use small Roman numerals"
   counter(page).update(1)
   set page(numbering: "I")
-  set align(top)
-  grid(
-    columns: (auto, 1fr, auto),
-    [Dissertation Advisor: #advisor], [], [#author],
-  )
+  set align(left + top)
+  if examiners.len() == 1 {
+    [Dissertation Advisor: #examiners.first() #h(1fr) #author]
+  } else {
+    [Examiners: #h(1fr) #author] + examiners.map(e => linebreak() + h(1em) + [#e]).join()
+  }
 
   v(5%)
-  text(accent-color, 17.28pt)[#(title)]
+  align(center, text(accent-color, 17.28pt)[#(title)])
   v(7%)
 
   // to mimic Double Spacing
@@ -155,7 +156,7 @@
   set text(top-edge: 0.7em, bottom-edge: -0.4em)
   set par(justify: true, spacing: 1.8em, leading: 1em)
 
-  [*Abstract*]
+  align(center)[*Abstract*]
 
   set align(left)
   abstract

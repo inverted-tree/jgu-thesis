@@ -33,7 +33,7 @@ Apply `frontmatter` as a show rule at the top of your document. This allows you 
 #show: frontmatter.with(
   title: "...",
   author: "...",
-  advisor: "...",
+  examiners: ("...",),             // add more entries for multiple examiners
   abstract: [...],
   thesis-type: "dissertation",    // "dissertation", "master", or "bachelor"
   doctor-of: "Natural Sciences",

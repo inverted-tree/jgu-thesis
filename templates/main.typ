@@ -12,7 +12,7 @@
     for precision tests of the Standard Model and searches for physics beyond it.
   ],
   author: "Jane Doe",
-  advisor: "Dear Advisor",
+  examiners: ("Dear Advisor",),
   department: "Department of Physics",
   thesis-type: "dissertation",
   doctor-of: "Natural Sciences",
