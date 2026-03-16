@@ -18,6 +18,8 @@
   doctor-of: "Natural Sciences",
   major: "Physics",
   creative-commons: true,
+  dedication: none,
+  acknowledgements: none,
   list-of-figures: false,
   list-of-tables: false,
   abbreviations: none,

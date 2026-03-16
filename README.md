@@ -41,6 +41,8 @@ Apply `frontmatter` as a show rule at the top of your document. This allows you 
   department: "Department of Physics",
   completion-date: "May 2026",    // defaults to today
   creative-commons: true,         // CC BY 4.0 on copyright page
+  dedication: [_For my family._],
+  acknowledgements: [...],
   list-of-figures: false,
   list-of-tables: false,
   abbreviations: (
@@ -50,7 +52,7 @@ Apply `frontmatter` as a show rule at the top of your document. This allows you 
 )
 ```
 
-The list of figures and tables are optional. If set to true, typst will automatically populate them. A list of abbreviations can be created by populating the abbreviations list. Entries will be sorted alphabetically and rendered as a two-column list.
+The dedication is rendered centered on an unnumbered page after the copyright page. Acknowledgements appear as the last frontmatter section before the chapters and are listed in the TOC. The list of figures and tables are populated automatically by Typst when enabled. Abbreviations are sorted alphabetically and rendered as a two-column list.
 
 The package also exports `accent-color` (JGU red), which can be used in custom figures or highlighted content, or overwritten with a different color.
 

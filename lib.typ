@@ -18,6 +18,8 @@
   list-of-figures: false,
   list-of-tables: false,
   abbreviations: none,
+  dedication: none,
+  acknowledgements: none,
   doc,
 ) = {
   let first-chapter-seen = state("first-chapter-seen", false)
@@ -128,6 +130,10 @@
     #v(15%)
     #if logo != none { logo } else { image("img/logo.svg", width: 6cm) }
   ]
+  if dedication != none {
+    pagebreak()
+    align(center + horizon, dedication)
+  }
   pagebreak()
 
   // "Preliminary pages (abstract, table of contents, list of tables, graphs, illustrations, and
@@ -238,6 +244,11 @@
       row-gutter: 0.6em,
       ..sorted.map(pair => (strong(pair.first()), pair.last())).flatten()
     )
+  }
+
+  if acknowledgements != none {
+    heading(level: 1, numbering: none, outlined: true)[Acknowledgements]
+    acknowledgements
   }
 
   set page(numbering: "1")
