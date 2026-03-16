@@ -10,6 +10,8 @@ jobs:
   release:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     permissions:
       contents: write
     steps:
@@ -58,7 +60,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add img/thumbnail.png img/ch1.png img/abst.png img/bib.png README.md
-          git diff --staged --quiet || git commit -m "Update images and README for ${{ steps.version.outputs.tag }}"
+          git diff --staged --quiet || git commit -m "Create release ${{ steps.version.outputs.tag }}"
           git push origin main
 
       - name: Tag release

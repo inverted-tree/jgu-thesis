@@ -71,7 +71,7 @@ superconducting environment.
 = Experimental Program
 
 Three experiments exploit the MESA beam, each targeting complementary physics
-goals @mesa-physics @prisma-mesa.
+goals @mesa-physics.
 
 == P2
 
@@ -121,7 +121,7 @@ dark matter mass $m_chi$ constitute the primary parameter space under investigat
 
 #lorem(20)
 
-#bibliography("refs.bib", style: "harvard-cite-them-right.csl")
+#bibliography("refs.yml", style: "harvard-cite-them-right")
 
 #show: appendix.with()
 
