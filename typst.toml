@@ -1,12 +1,12 @@
 [package]
-name = "harvard-gsas-thesis-oat"
+name = "jgu-mint-thesis"
 version = "0.1.5"
 entrypoint = "lib.typ"
-authors = ["Moelf <https://github.com/Moelf>"]
+authors = ["Lukas Schröder <https://github.com/inverted-tree>", "Moelf <https://github.com/Moelf>"]
 license = "MIT"
-description = "PhD Thesis template for Harvard GSAS (Graduate School of Arts and Sciences)"
-repository = "https://github.com/Moelf/harvard-gsas-thesis-oat"
-keywords = ["Harvard", "GSAS", "Harvard University", "dissertation", "thesis"]
+description = "MINT-focused thesis template for the Johannes Gutenberg University Mainz, adopted from Moelf's Harvard GSAS template."
+repository = "https://github.com/inverted-tree/jgu-thesis"
+keywords = ["JGU", "Mainz", "Johannes Gutenberg University", "MINT", "thesis"]
 categories = ["thesis"]
 
 [template]
