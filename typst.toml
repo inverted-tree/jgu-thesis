@@ -2,9 +2,9 @@
 name = "jgu-mint-thesis"
 version = "0.1.5"
 entrypoint = "lib.typ"
-authors = ["Lukas Schröder <https://github.com/inverted-tree>", "Moelf <https://github.com/Moelf>"]
+authors = ["Lukas Schröder <https://github.com/inverted-tree>", "Jerry Ling <https://github.com/Moelf>"]
 license = "MIT"
-description = "MINT-focused thesis template for the Johannes Gutenberg University Mainz, adopted from Moelf's Harvard GSAS template."
+description = "MINT-focused thesis template for the Johannes Gutenberg University Mainz, adopted from Jerry Ling's Harvard GSAS template."
 repository = "https://github.com/inverted-tree/jgu-thesis"
 keywords = ["JGU", "Mainz", "Johannes Gutenberg University", "MINT", "thesis"]
 categories = ["thesis"]
