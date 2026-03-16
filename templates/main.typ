@@ -1,4 +1,4 @@
-#import "@preview/harvard-gsas-thesis-oat:0.1.5": frontmatter, school-color, appendix
+#import "@local/jgu-mint-thesis:0.1.5": *
 
 #let ifb = $"fb"^(-1)$
 #let total-lumi = [140 #ifb]
@@ -13,10 +13,13 @@
       search for YYY in a novel #total-lumi dataset collected by the ATLAS experiment during Run 2 at the
       Large Hadron Collider (LHC) at #cme. The dataset is unique in that it is collected at the
   ],
-  author: "John Harvard",
-  advisor: "Melissa Franklin",
-  doctor-of: "Physics",
+  author: "Jane Doe",
+  advisor: "Dear Advisor",
+  department: "Department of Physics, Mathematics and Computer Science",
+  doctor-of: "Natural Sciences",
   major: "Physics",
+  institution: "Johannes Gutenberg University Mainz",
+  location: "Mainz, Germany",
 )
 
 = The LHC and the ATLAS
@@ -43,7 +46,7 @@ layer of the LAr ECal and is used to correct the energy loss in the passive mate
 @LAr_schematic shows the schematic of the EMB in regions with four layers.
 
 #figure(
-  rect(fill: school-color),
+  rect(fill: accent-color),
   caption: [Schematic of the EM Barrel Calorimeter, showing four layers including the presampler (PS) layer],
 ) <LAr_schematic>
 
@@ -70,6 +73,6 @@ $
 $
 
 #figure(
-  rect(fill: school-color),
+  rect(fill: accent-color),
   caption: [Here's a figure in Appendix],
 ) <appendix_figure>

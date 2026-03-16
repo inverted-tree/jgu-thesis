@@ -1,21 +1,21 @@
-#let school-color = rgb(165, 28, 48)
+#let accent-color = rgb(165, 28, 48)
 
 #let frontmatter(
   title: none,
   abstract: [],
-  author: "John Harvard",
+  author: "Jane Doe",
   advisor: "Dear Advisor",
   department: "Department of Physics",
   doctor-of: "Philosophy",
   major: "Physics",
+  institution: "Johannes Gutenberg University Mainz",
+  location: "Mainz, Germany",
   completion-date: datetime.today().display("[month repr:long] [year]"),
   creative-commons: true,
   doc,
 ) = {
   set page(
     paper: "us-letter",
-    // margin is automatically 2.5/11 times the short side of us-letter
-    // which is about 1.01 inch
     margin: (x: 1.375in, y: 1.375in),
     numbering: "I",
   )
@@ -30,7 +30,7 @@
     #set text(20pt, weight: "regular")
     #pagebreak()
     #v(25%)
-    #text(100pt, school-color, counter(heading).display())\
+    #text(100pt, accent-color, counter(heading).display())\
     #text(24.88pt, it.body)
     #v(4em)
   ]
@@ -65,7 +65,7 @@
   counter(page).update(1)
   grid(
     [
-      #text(school-color, 24.88pt)[#(title)]
+      #text(accent-color, 24.88pt)[#(title)]
 
       #v(100pt)
       #show: smallcaps
@@ -82,15 +82,15 @@
       in the subject of\
       #major
       #v(12pt)
-      Harvard University\
-      Cambridge, Massachusetts\
+      #institution\
+      #location\
       #completion-date
     ],
   )
 
   pagebreak()
   show link: it => {
-    set text(fill: school-color)
+    set text(fill: accent-color)
     it
   }
 
@@ -115,14 +115,13 @@
   )
 
   v(5%)
-  text(school-color, 17.28pt)[#(title)]
+  text(accent-color, 17.28pt)[#(title)]
   v(7%)
 
   // to mimic Double Spacing
   // https://github.com/typst/typst/issues/106#issuecomment-2041051807
   set text(top-edge: 0.7em, bottom-edge: -0.4em)
   set par(justify: true, spacing: 1.8em, leading: 1em)
-
 
   [*Abstract*]
 
@@ -134,7 +133,7 @@
   show outline.entry.where(level: 1): it => { smallcaps(it) }
 
   show ref: it => {
-    set text(fill: school-color)
+    set text(fill: accent-color)
     it
   }
   show figure.caption: it => [
@@ -157,7 +156,6 @@
     ),
   )
 
-  set page(numbering: none)
   counter(page).update(1)
   set page(numbering: "1")
   doc
@@ -166,7 +164,14 @@
 #let appendix(
   doc,
 ) = {
-  set heading(numbering: (..num) => "A." + numbering("1", num.pos().last()))
+  set heading(numbering: (..num) => {
+    let nums = num.pos()
+    if nums.len() == 1 {
+      numbering("A", nums.first())
+    } else {
+      numbering("A.1", ..nums)
+    }
+  })
   show heading.where(
     level: 1,
     outlined: true,
@@ -175,12 +180,11 @@
     #set text(20pt, weight: "regular")
     #pagebreak()
     #v(25%)
-    #text(100pt, school-color, "A")\
+    #text(100pt, accent-color, counter(heading).display())\
     #text(24.88pt, it.body)
     #v(4em)
   ]
   show heading.where(level: 1): smallcaps
-
   show heading.where(level: 1): it => {
     counter(math.equation).update(0)
     counter(figure.where(kind: image)).update(0)
@@ -189,7 +193,15 @@
     it
   }
 
-  set math.equation(numbering: (..num) => "(A." + numbering("1.1", ..num) + ")")
-  set figure(numbering: (..num) => "A." + numbering("1.1", ..num))
+  set math.equation(numbering: (..num) => {
+    let ch = counter(heading).get().first()
+    "(" + numbering("A", ch) + "." + numbering("1.1", ..num) + ")"
+  })
+  set figure(numbering: (..num) => {
+    let ch = counter(heading).get().first()
+    numbering("A", ch) + "." + numbering("1.1", ..num)
+  })
+
+  counter(heading).update(0)
   doc
 }
