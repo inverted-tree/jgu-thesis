@@ -48,3 +48,11 @@ jobs:
         run: |
           git tag ${{ steps.version.outputs.tag }}
           git push origin ${{ steps.version.outputs.tag }}
+
+      - name: Create release
+        if: steps.version.outputs.tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(awk '/^## ${{ steps.version.outputs.tag }}/{found=1; next} found && /^## /{exit} found{print}' README.md | sed '/^[[:space:]]*$/d')
+          gh release create ${{ steps.version.outputs.tag }} --title ${{ steps.version.outputs.tag }} --notes "$notes"
