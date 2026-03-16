@@ -179,7 +179,7 @@
       #set text(20pt, weight: "regular")
       #pagebreak()
       #v(25%)
-      #text(100pt, accent-color, "B")\
+      #text(100pt, accent-color, it.body.text.at(0))\
       #text(24.88pt, it.body)
       #v(4em)
     ]
