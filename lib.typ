@@ -37,14 +37,20 @@
     #set align(right)
     #set text(20pt, weight: "regular")
     #pagebreak()
-    #if not first-chapter-seen.get() [
-      #first-chapter-seen.update(true)
-      #counter(page).update(1)
+    #if it.numbering != none [
+      #if not first-chapter-seen.get() [
+        #first-chapter-seen.update(true)
+        #counter(page).update(1)
+      ]
+      #v(25%)
+      #text(100pt, accent-color, counter(heading).display())\
+      #text(24.88pt, it.body)
+      #v(4em)
+    ] else [
+      #v(25%)
+      #text(23pt, it.body)
+      #v(2em)
     ]
-    #v(25%)
-    #text(100pt, accent-color, counter(heading).display())\
-    #text(24.88pt, it.body)
-    #v(4em)
   ]
   show heading.where(level: 1): smallcaps
   show heading.where(level: 1): it => {
@@ -151,7 +157,7 @@
 
   show outline.entry.where(level: 1): set outline.entry(fill: none)
   show outline.entry.where(level: 1): it => context {
-    if _in-appendix.at(it.element.location()) and it.element.numbering != none {
+    if it.element.func() == heading and _in-appendix.at(it.element.location()) and it.element.numbering != none {
       // Appendix chapter — indented sub-entry
       pad(left: 1.5em, it)
     } else {
@@ -200,39 +206,31 @@
   )
 
   if list-of-figures {
-    pagebreak()
-    outline(
-      title: grid(
-        [
-          #set text(23pt)
-          #h(1fr)
-          List of Figures
-          #v(2em)
-        ],
-      ),
-      target: figure.where(kind: image),
-    )
+    heading(level: 1, numbering: none, outlined: true)[List of Figures]
+    {
+      set text(top-edge: 0.7em, bottom-edge: -0.3em)
+      set par(leading: 0.5em, spacing: 1.2em)
+      outline(
+        title: none,
+        target: figure.where(kind: image),
+      )
+    }
   }
 
   if list-of-tables {
-    pagebreak()
-    outline(
-      title: grid(
-        [
-          #set text(23pt)
-          #h(1fr)
-          List of Tables
-          #v(2em)
-        ],
-      ),
-      target: figure.where(kind: table),
-    )
+    heading(level: 1, numbering: none, outlined: true)[List of Tables]
+    {
+      set text(top-edge: 0.7em, bottom-edge: -0.3em)
+      set par(leading: 0.5em, spacing: 1.2em)
+      outline(
+        title: none,
+        target: figure.where(kind: table),
+      )
+    }
   }
 
   if abbreviations != none {
-    pagebreak()
-    align(right, text(23pt)[Abbreviations])
-    v(2em)
+    heading(level: 1, numbering: none, outlined: true)[Abbreviations]
     let sorted = abbreviations.pairs().sorted(key: pair => pair.first())
     grid(
       columns: (auto, 1fr),
