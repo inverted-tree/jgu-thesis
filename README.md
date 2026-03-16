@@ -22,7 +22,7 @@ just install
 This copies the package into the Typst local packages directory for your OS. You can then import it in any Typst project using the @local namespace:
 
 ```typst
-#import "@local/jgu-mint-thesis:0.1.7": *
+#import "@local/jgu-mint-thesis:0.1.8": *
 ```
 
 # Usage
@@ -68,6 +68,13 @@ Place `#bibliography(...)` right before the appendix. Below that, switch heading
 ```
 
 # Changelog
+
+## 0.1.8
+- Added optional statutory declaration page (appended as final page)
+- Added support for multiple examiners
+- Added optional dedication and acknowledgements pages
+- Fixed list of figures, tables, and abbreviations not appearing in TOC
+- Bibliography/References heading letter is now derived from the section title
 
 ## 0.1.7
 - Added optional list of figures, list of tables, and abbreviations sections
