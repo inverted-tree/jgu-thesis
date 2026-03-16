@@ -20,6 +20,7 @@
   abbreviations: none,
   dedication: none,
   acknowledgements: none,
+  statutory-declaration: none,
   doc,
 ) = {
   let first-chapter-seen = state("first-chapter-seen", false)
@@ -254,6 +255,9 @@
 
   set page(numbering: "1")
   doc
+  if statutory-declaration != none {
+    page(margin: 0pt, numbering: none, statutory-declaration)
+  }
 }
 
 #let appendix(
