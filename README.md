@@ -22,7 +22,7 @@ just install
 This copies the package into the Typst local packages directory for your OS. You can then import it in any Typst project using the @local namespace:
 
 ```typst
-#import "@local/jgu-mint-thesis:0.1.8": *
+#import "@local/jgu-mint-thesis:0.2.0": *
 ```
 
 # Usage
