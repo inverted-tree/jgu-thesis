@@ -43,7 +43,7 @@
   major: "Physics",
   institution: "Johannes Gutenberg University Mainz",
   location: "Mainz, Germany",
-  completion-date: datetime.today().display("[month repr:long] [year]"),
+  completion-date: none,
   creative-commons: true,
   list-of-figures: false,
   list-of-tables: false,
@@ -56,6 +56,16 @@
   doc,
 ) = {
   let s = _i18n.at(language)
+  if completion-date == none {
+    let today = datetime.today()
+    completion-date = if language == "de" {
+      let months-de = ("Januar", "Februar", "März", "April", "Mai", "Juni",
+                       "Juli", "August", "September", "Oktober", "November", "Dezember")
+      months-de.at(today.month() - 1) + " " + str(today.year())
+    } else {
+      today.display("[month repr:long] [year]")
+    }
+  }
   let first-chapter-seen = state("first-chapter-seen", false)
 
   set page(

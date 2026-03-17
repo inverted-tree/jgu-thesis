@@ -22,7 +22,7 @@ just install
 This copies the package into the Typst local packages directory for your OS. You can then import it in any Typst project using the @local namespace:
 
 ```typst
-#import "@local/jgu-mint-thesis:0.2.0": *
+#import "@local/jgu-mint-thesis:0.2.1": *
 ```
 
 # Usage
@@ -69,6 +69,9 @@ Place `#bibliography(...)` right before the appendix. Below that, switch heading
 ```
 
 # Changelog
+
+## 0.2.1
+- Fix completion date showing English month names when `language: "de"`
 
 ## 0.2.0
 - Add german language support
