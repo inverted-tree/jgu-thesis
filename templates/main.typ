@@ -1,4 +1,4 @@
-#import "@local/jgu-mint-thesis:0.1.8": *
+#import "@local/jgu-mint-thesis:0.2.0": *
 
 #show: frontmatter.with(
   title: "Precision Measurements at MESA",
@@ -24,6 +24,7 @@
   list-of-tables: false,
   abbreviations: none,
   statutory-declaration: none,
+  language: "en",
 )
 
 = The MESA Accelerator

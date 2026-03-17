@@ -50,10 +50,11 @@ Apply `frontmatter` as a show rule at the top of your document. This allows you 
     "MESA": "Mainz Energy-recovering Superconducting Accelerator",
   ),
   statutory-declaration: image("declaration.pdf", width: 100%, height: 100%, fit: "contain"),
+  language: "en",           // "en" or "de"
 )
 ```
 
-The dedication is rendered centered on an unnumbered page after the copyright page. Acknowledgements appear as the last frontmatter section before the chapters and are listed in the TOC. The list of figures and tables are populated automatically by Typst when enabled. Abbreviations are sorted alphabetically and rendered as a two-column list. If `statutory-declaration` is set, it is appended as the final page without margins — intended for a scanned signed declaration of originality, passed as `image("declaration.pdf", width: 100%, height: 100%, fit: "contain")`.
+The dedication is rendered centered on an unnumbered page after the copyright page. Acknowledgements appear as the last frontmatter section before the chapters and are listed in the TOC. The list of figures and tables are populated automatically by Typst when enabled. Abbreviations are sorted alphabetically and rendered as a two-column list. If `statutory-declaration` is set, it is appended as the final page without margins — intended for a scanned signed declaration of originality, passed as `image("declaration.pdf", width: 100%, height: 100%, fit: "contain")`. Setting `language: "de"` switches all template strings to German (section titles, examiner labels, title page phrasing) and also needs to be passed to `#show: appendix.with(language: "de")`.
 
 The package also exports `accent-color` (JGU red), which can be used in custom figures or highlighted content, or overwritten with a different color.
 
@@ -68,6 +69,9 @@ Place `#bibliography(...)` right before the appendix. Below that, switch heading
 ```
 
 # Changelog
+
+## 0.2.0
+- Add german language support
 
 ## 0.1.8
 - Added optional statutory declaration page (appended as final page)
