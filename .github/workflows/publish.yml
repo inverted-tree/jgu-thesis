@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 2
+          fetch-depth: 3
 
       - name: Resolve version
         id: version
@@ -32,7 +32,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "tag=${{ inputs.version }}" >> $GITHUB_OUTPUT
           else
-            OLD=$(git show HEAD~1:typst.toml | grep '^version' | cut -d'"' -f2)
+            OLD=$(git show HEAD~2:typst.toml | grep '^version' | cut -d'"' -f2)
             NEW=$(grep '^version' typst.toml | cut -d'"' -f2)
             if [ "$OLD" != "$NEW" ]; then
               echo "tag=$NEW" >> $GITHUB_OUTPUT

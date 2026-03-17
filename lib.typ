@@ -103,7 +103,6 @@
     counter(math.equation).update(0)
     counter(figure.where(kind: image)).update(0)
     counter(figure.where(kind: table)).update(0)
-    counter(figure.where(kind: raw)).update(0)
     it
   }
   show heading.where(level: 2): set block(above: 2.1em)
@@ -357,7 +356,6 @@
     counter(math.equation).update(0)
     counter(figure.where(kind: image)).update(0)
     counter(figure.where(kind: table)).update(0)
-    counter(figure.where(kind: raw)).update(0)
     it
   }
 
