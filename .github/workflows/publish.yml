@@ -1,0 +1,80 @@
+name: Publish
+
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to submit (e.g. 0.2.1)"
+        required: true
+
+jobs:
+  publish:
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: typst-universe
+    permissions:
+      deployments: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Resolve version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            OLD=$(git show HEAD~1:typst.toml | grep '^version' | cut -d'"' -f2)
+            NEW=$(grep '^version' typst.toml | cut -d'"' -f2)
+            if [ "$OLD" != "$NEW" ]; then
+              echo "tag=$NEW" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Submit to Typst Universe
+        if: steps.version.outputs.tag
+        env:
+          GH_TOKEN: ${{ secrets.TYPST_PACKAGES_TOKEN }}
+        run: |
+          VERSION=${{ steps.version.outputs.tag }}
+          NAME=$(grep '^name' typst.toml | sed 's/.*= "\(.*\)"/\1/')
+          BRANCH="$NAME/$VERSION"
+
+          FORK_OWNER=$(gh api user --jq .login)
+          git clone "https://x-access-token:$GH_TOKEN@github.com/$FORK_OWNER/typst-packages.git"
+          cd typst-packages
+          git remote add upstream https://github.com/typst/packages.git
+          git fetch upstream main
+          git checkout -b "$BRANCH" upstream/main
+
+          DEST="packages/preview/$NAME/$VERSION"
+          mkdir -p "$DEST"
+          cp ../typst.toml "$DEST/"
+          cp ../lib.typ "$DEST/"
+          cp ../LICENSE "$DEST/"
+          cp ../README.md "$DEST/"
+          mkdir -p "$DEST/templates"
+          cp ../templates/main.typ "$DEST/templates/"
+          cp ../templates/refs.yml "$DEST/templates/"
+          cp -r ../img "$DEST/"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$DEST"
+          git commit -m "$NAME:$VERSION"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --repo typst/packages \
+            --title "$NAME:$VERSION" \
+            --body "Automated submission of \`$NAME\` version \`$VERSION\`." \
+            --head "$FORK_OWNER:$BRANCH" \
+            --base main
